@@ -3,10 +3,11 @@ import "./App.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import HomePage from "./pages/home/HomePage";
 import NotFoundPage from "./pages/error/NotFoundPage";
-import { ROUTE_LOGIN, ROUTE_POST_CREATE, ROUTE_REGISTER } from "./constants/WebPath";
+import { ROUTE_LOGIN, ROUTE_POST_CREATE, ROUTE_POST_DETAILS, ROUTE_REGISTER } from "./constants/WebPath";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import CreatePost from "./pages/posts/CreatePost";
+import PostDetailPage from "./pages/posts/PostDetailPage";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path={ROUTE_LOGIN} element={<LoginPage />} />
           <Route path={ROUTE_REGISTER} element={<RegisterPage />} />
           <Route path={ROUTE_POST_CREATE} element={<CreatePost />} />
+          <Route path={ROUTE_POST_DETAILS} element={<PostDetailPage />} />
         </Routes>
       </div>
     </Router>

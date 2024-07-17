@@ -15,7 +15,7 @@ export async function getPosts() {
       toast.error('Failed to login');
     }
   }
-  export async function getPost(id: number) {
+  export async function getPost(id: string) {
     try {
       const response = await fetch(`${SERVER_POSTS_PATH}/${id}`);
       if (!response.ok) {
@@ -29,7 +29,7 @@ export async function getPosts() {
     }
   }
 
-  export async function likePost(id: number) {
+  export async function likePost(id: string) {
     try {
       const postResponse = await fetch(`${SERVER_POSTS_PATH}/${id}`);
       if (!postResponse.ok) {
@@ -57,7 +57,7 @@ export async function getPosts() {
     }
   }
 
-  export async function dislikePost(id: number) {
+  export async function dislikePost(id: string) {
     try {
       const postResponse = await fetch(`${SERVER_POSTS_PATH}/${id}`);
       if (!postResponse.ok) {

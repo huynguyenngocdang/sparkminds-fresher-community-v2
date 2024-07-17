@@ -32,7 +32,6 @@ const LoginPage = () => {
   const { value: showPassword, handleToggleValue: handleTogglePassword } =
     useToggleValues();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleSignIn = async ({ username, password }: TAuthProps) => {
     try {
@@ -41,7 +40,6 @@ const LoginPage = () => {
         toast.success(`Welcome back, ${authUsername}`);
         sessionStorage.setItem("username", authUsername);
         reset();
-
         navigate("/");
       }
     } catch (error) {

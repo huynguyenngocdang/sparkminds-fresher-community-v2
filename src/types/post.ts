@@ -1,5 +1,5 @@
 export type TPost = {
-    id: number;
+    id: string;
     title: string;
     content: string | null;
     imageUrl: string | null;
@@ -9,3 +9,7 @@ export type TPost = {
     postType: string;
     isDelete: boolean;
 };
+
+export type TCommentFormInput = {
+    newcomment: string;
+}

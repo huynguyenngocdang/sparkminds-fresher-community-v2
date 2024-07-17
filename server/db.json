@@ -6,7 +6,7 @@
       "content": "content",
       "imageUrl": "",
       "author": "admin",
-      "totalLikes": 4,
+      "totalLikes": 2,
       "createDate": "2021-07-01T00:00:00.000Z",
       "postType": "TEXT",
       "isDelete": false
@@ -92,8 +92,17 @@
   "comments": [
     {
       "id": "1",
-      "body": "some comment",
-      "postId": 1
+      "comment": "some comment",
+      "author": "admin",
+      "createdDate": "2024-07-17T10:19:18.692Z",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "comment": "some comment 2",
+      "author": "huy",
+      "createdDate": "2024-07-17T10:19:18.692Z",
+      "postId": "2"
     }
   ],
   "users": [
