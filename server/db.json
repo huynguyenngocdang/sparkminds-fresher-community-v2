@@ -1,12 +1,126 @@
 {
-    "posts": [
-      { "id": 1, "title": "json-server", "photoUrl": "", "content": "content", "author": "admin" }
-    ],
-    "comments": [
-      { "id": 1, "body": "some comment", "postId": 1 }
-    ],
-    "users": [
-        { "id": 1, "username" : "admin", "password" : "admin" },
-        { "id": 2, "username" : "huy", "password" : "huy" }
-    ]
-  }
+  "posts": [
+    {
+      "id": "1",
+      "title": "json-server",
+      "content": "content",
+      "imageUrl": "",
+      "author": "admin",
+      "totalLikes": 4,
+      "createDate": "2021-07-01T00:00:00.000Z",
+      "postType": "TEXT",
+      "isDelete": false
+    },
+    {
+      "id": "ca26480a-9f00-4197-aa3d-6a705548df39",
+      "title": "post 2",
+      "content": "post 2",
+      "imageUrl": null,
+      "author": "admin",
+      "totalLikes": 0,
+      "createdDate": "2024-07-17T10:12:37.525Z",
+      "postType": "TEXT",
+      "isDelete": false
+    },
+    {
+      "id": "0e1a4fe4-6cd4-4673-95b4-84faf7f1987f",
+      "title": "post 3",
+      "content": "post 3",
+      "imageUrl": null,
+      "author": "admin",
+      "totalLikes": 0,
+      "createdDate": "2024-07-17T10:14:09.698Z",
+      "postType": "TEXT",
+      "isDelete": false
+    },
+    {
+      "id": "4f28ae4b-eebf-4176-87a4-d9a278effea4",
+      "title": "post 3",
+      "content": "post 3",
+      "imageUrl": null,
+      "author": "admin",
+      "totalLikes": 0,
+      "createdDate": "2024-07-17T10:14:51.490Z",
+      "postType": "TEXT",
+      "isDelete": false
+    },
+    {
+      "id": "d16e359c-9a74-416d-b028-cda46c58cac2",
+      "title": "post 3",
+      "content": "post 3",
+      "imageUrl": null,
+      "author": "admin",
+      "totalLikes": 0,
+      "createdDate": "2024-07-17T10:16:48.523Z",
+      "postType": "TEXT",
+      "isDelete": false
+    },
+    {
+      "id": "d449afb9-b2b5-4d34-bfcc-232f66237d2f",
+      "title": "post 34",
+      "content": "post 3",
+      "imageUrl": null,
+      "author": "admin",
+      "totalLikes": 0,
+      "createdDate": "2024-07-17T10:18:31.130Z",
+      "postType": "TEXT",
+      "isDelete": false
+    },
+    {
+      "id": "f808ff6b-ee36-44ff-b1f3-18de79761ca7",
+      "title": "abc",
+      "content": "abc",
+      "imageUrl": null,
+      "author": "admin",
+      "totalLikes": 0,
+      "createdDate": "2024-07-17T10:18:51.295Z",
+      "postType": "TEXT",
+      "isDelete": false
+    },
+    {
+      "id": "ef222334-5dfb-49a1-b8de-abc8b044d9ea",
+      "title": "abc",
+      "content": "abc",
+      "imageUrl": null,
+      "author": null,
+      "totalLikes": 0,
+      "createdDate": "2024-07-17T10:19:18.692Z",
+      "postType": "TEXT",
+      "isDelete": false
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin"
+    },
+    {
+      "id": "2",
+      "username": "huy",
+      "password": "huy"
+    },
+    {
+      "id": "fa12c82c-325e-4d80-8a1c-53e264b643cb",
+      "username": "abc",
+      "password": "abc"
+    },
+    {
+      "id": "ec39ef78-11d2-466d-b49d-d0c833bde50a",
+      "username": "abcd",
+      "password": "abc"
+    },
+    {
+      "id": "458ce826-e7fc-483e-adbc-46b5e25a908a",
+      "username": "abcde",
+      "password": "abc"
+    }
+  ]
+}

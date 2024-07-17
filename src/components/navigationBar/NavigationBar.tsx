@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { ROUTE_HOME, ROUTE_LOGIN, ROUTE_POST_CREATE } from "../../constants/WebPath";
 import { RedditIcon, RedditText, UserProfileIcon } from "../icons";
 import CreateButton from "../ui/button/CreateButton";
+import { useAuth } from "../../context/AuthProvider";
 
 
 const NavigationBar = () => {
@@ -11,6 +12,7 @@ const NavigationBar = () => {
   const toggleDropdown = () => setIsDropdownVisible(!isDropdownVisible);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { logout } = useAuth() as any;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -51,11 +53,12 @@ const NavigationBar = () => {
               {/* Dropdown Menu */}
               {isDropdownVisible && (
                 <div className="dropdown-content absolute right-2 top-[35px] mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
-                  {sessionStorage.getItem('accessToken') ? (
+                  {sessionStorage.getItem('username') ? (
                     <button
                       className="block px-4 py-2 text-sm text-gray-700"
-                      onClick={() => {                    
-                        sessionStorage.removeItem('accessToken');
+                      onClick={() => {  
+                        logout();                   
+                        sessionStorage.removeItem('username');
                         toast.success("Logged out successfully");
                         navigate(ROUTE_HOME);
                       }}
