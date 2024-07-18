@@ -1,0 +1,75 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "json-server",
+      "content": "content abc",
+      "imageUrl": null,
+      "author": "admin",
+      "totalLikes": 0,
+      "createdDate": "2024-07-18T02:02:51.745Z",
+      "postType": "TEXT",
+      "isDelete": false
+    },
+    {
+      "id": "ca26480a-9f00-4197-aa3d-6a705548df39",
+      "title": "post 2",
+      "content": "post 2",
+      "imageUrl": null,
+      "author": "admin",
+      "totalLikes": 0,
+      "createdDate": "2024-07-17T10:12:37.525Z",
+      "postType": "TEXT",
+      "isDelete": false
+    },
+    {
+      "id": "0e1a4fe4-6cd4-4673-95b4-84faf7f1987f",
+      "title": "post 3",
+      "content": "post 3",
+      "imageUrl": null,
+      "author": "admin",
+      "totalLikes": 0,
+      "createdDate": "2024-07-17T10:14:09.698Z",
+      "postType": "TEXT",
+      "isDelete": false
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "comment": "some comment",
+      "author": "admin",
+      "createdDate": "2024-07-17T10:19:18.692Z",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "comment": "some comment 2",
+      "author": "huy",
+      "createdDate": "2024-07-17T10:19:18.692Z",
+      "postId": "2"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin"
+    },
+    {
+      "id": "2",
+      "username": "huy",
+      "password": "huy"
+    },
+    {
+      "id": "d7f85111-3ce7-474d-aa1f-f25327953bd4",
+      "username": "danghuy9229",
+      "password": "123"
+    },
+    {
+      "id": "ca90a8b0-cfb5-4c72-8639-42253cee8a72",
+      "username": "hung",
+      "password": "hung"
+    }
+  ]
+}
