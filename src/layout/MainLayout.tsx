@@ -6,11 +6,11 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <NavigationBar />
-      <div className="container flex mx-auto p-4">
-        <div className="w-1/4">
+      <div className="container flex">
+        <div className="w-1/5 max-w-[250px] border-r p-2">
           <LeftPanel />
         </div>
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 ml-[25px] p-2">{children}</div>
       </div>
     </>
   );

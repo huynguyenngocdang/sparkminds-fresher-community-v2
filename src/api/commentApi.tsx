@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { SERVER_COMMENTS_PATH, SERVER_PATH, SERVER_POSTS_PATH } from "../constants/ServerPath";
+import { SERVER_COMMENTS_PATH, SERVER_PATH } from "../constants/ServerPath";
 import axios from "axios";
 
 export async function getCommentByPostId(postId: string) {

@@ -14,11 +14,11 @@ import Label from "../../components/ui/label/Label";
 import Input from "../../components/ui/input/Input";
 import TextArea from "../../components/ui/textarea/TextArea";
 import Button from "../../components/ui/button/Button";
-import { createPost } from "../../api/postApi";
+import { createPost, getPost, updatePost } from "../../api/postApi";
 import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from "../../context/AuthProvider";
-import { useNavigate } from "react-router-dom";
-import { ROUTE_HOME } from "../../constants/WebPath";
+import { useParams } from "react-router-dom";
+import { NOTIFICATION_EDIT_POST_SUCCESS, NOTIFICATION_ERROR_UNEXPECTED, NOTIFICATION_ERROR_UPLOAD_IMAGE, NOTIFICATION_LOGIN_REQUIRED } from "../../constants/Notification";
 
 
 interface FormData {
@@ -33,10 +33,10 @@ const schema = yup.object().shape({
   images: yup.mixed(),
 });
 
-const CreatePost: React.FC = () => {
+const EditPostPage: React.FC = () => {
   const [mode, setMode] = useState<EPostType>(EPostType.TEXT);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
-  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
   const {
     handleSubmit,
@@ -61,6 +61,21 @@ const CreatePost: React.FC = () => {
     }
   }, [watchedImages]);
 
+  useEffect(() => {
+    const fetchPostData = async () => {
+      if (id) {
+        const post = await getPost(id);
+        if (post) {
+          setValue("title", post.title);
+          setValue("content", post.content);
+          setSelectedImages([post.imageUrl]);
+          setMode(post.content ? EPostType.TEXT : EPostType.IMAGE);
+        }
+      }
+    };
+    fetchPostData();
+  }, [id, setValue]);
+
   const uploadImageAndGetURL = async (imageFile: File): Promise<string> => {
     const storageRef = ref(storage, `images/${imageFile.name + Date.now()}`);
     await uploadBytes(storageRef, imageFile);
@@ -69,10 +84,9 @@ const CreatePost: React.FC = () => {
   };
 
   const handleCreatePost: SubmitHandler<FormData> = async (data) => {
-    const uniqueId = uuidv4();
     const username = sessionStorage.getItem("username");
     if (!user) {
-      toast.error("Please login to create a post");
+      toast.error(NOTIFICATION_LOGIN_REQUIRED);
       return;
     }
     if (data.images) {
@@ -81,7 +95,7 @@ const CreatePost: React.FC = () => {
         const uploadPromises = imageFiles.map(uploadImageAndGetURL);
         const imageUrl = await Promise.all(uploadPromises);
         const postData = {
-          id: uniqueId,
+          id: id,
           title: data.title,
           content: null,
           imageUrl: imageUrl[0], // Assuming you only need the first image URL
@@ -91,16 +105,16 @@ const CreatePost: React.FC = () => {
           postType: mode,
           isDelete: false,
         };
-        const response = await createPost(postData);
+        const response = await updatePost(id || "", postData);
         handleResponse(response);
       } catch (error) {
-        console.error("Error uploading images: ", error);
+        console.error(NOTIFICATION_ERROR_UPLOAD_IMAGE, error);
       }
     }
 
     if (data.content) {
       const postData = {
-        id: uniqueId,
+        id: id,
         title: data.title,
         content: data.content,
         imageUrl: null,
@@ -110,18 +124,17 @@ const CreatePost: React.FC = () => {
         postType: mode,
         isDelete: false,
       };
-      const response = await createPost(postData);
+      const response = await updatePost(id || "", postData);
       handleResponse(response);
     }
 
   };
   
   function handleResponse(response: any) {
-    if (response && response.status === 201) {
-      toast.success("Created Post successfully");
-      navigate(ROUTE_HOME);
+    if (response && response.status === 200) {
+      toast.success(NOTIFICATION_EDIT_POST_SUCCESS);
     } else {
-      toast.error("An unexpected error occurred.");
+      toast.error(NOTIFICATION_ERROR_UNEXPECTED);
     }
   }
 
@@ -228,4 +241,4 @@ const CreatePost: React.FC = () => {
   );
 };
 
-export default CreatePost;
+export default EditPostPage;

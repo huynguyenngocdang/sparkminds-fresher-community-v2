@@ -6,14 +6,14 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import useToggleValues from "../../hooks/useToggleValues";
 import { TAuthProps } from "../../types/auth";
-import { ROUTE_REGISTER } from "../../constants/WebPath";
+import { ROUTE_HOME, ROUTE_REGISTER } from "../../constants/WebPath";
 import FormGroup from "../../components/ui/formGroup/FormGroup";
 import Label from "../../components/ui/label/Label";
 import Input from "../../components/ui/input/Input";
 import EyeToggleIcon from "../../components/icons/EyeToggleIcon";
 import Button from "../../components/ui/button/Button";
-import { login } from "../../api/authApi";
 import { useAuth } from "../../context/AuthProvider";
+import { login } from "../../api/authApi";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -32,15 +32,16 @@ const LoginPage = () => {
   const { value: showPassword, handleToggleValue: handleTogglePassword } =
     useToggleValues();
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const handleSignIn = async ({ username, password }: TAuthProps) => {
     try {
       const authUsername = await login({ username, password });
       if(authUsername) {
         toast.success(`Welcome back, ${authUsername}`);
-        sessionStorage.setItem("username", authUsername);
+        auth?.authLogin(authUsername);
         reset();
-        navigate("/");
+        navigate(ROUTE_HOME);
       }
     } catch (error) {
       console.error("Login error:", error);

@@ -11,6 +11,7 @@ import EyeToggleIcon from "../../components/icons/EyeToggleIcon";
 import Button from "../../components/ui/button/Button";
 import { register } from "../../api/authApi";
 import { toast } from "react-toastify";
+import { useAuth } from "../../context/AuthProvider";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -29,13 +30,14 @@ const RegisterPage = () => {
   const { value: showPassword, handleToggleValue: handleTogglePassword } =
     useToggleValues();
   const navigate = useNavigate();
+  const auth = useAuth();
+  
 
   const handleRegister = async ({ username, password }: TAuthProps) => {
    const response = await register({ username, password });
-   console.log("🚀 ~ handleRegister ~ response:", response)
    if(response?.status === 201) {
     toast.success("Registered successfully! Loggin in...");
-    sessionStorage.setItem("username", username);
+    auth?.authLogin(username);
      reset();
      navigate("/");
    }

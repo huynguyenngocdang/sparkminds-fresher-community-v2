@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 
 import * as yup from "yup";
@@ -6,16 +5,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TCommentFormInput, TPost } from "../../types/post";
 import useToggleValues from "../../hooks/useToggleValues";
-import ThumbUpIcon from "../icons/ThumbUpIcon";
-import ThumbDownIcon from "../icons/ThumbDownIcon";
-import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import { dislikePost, getPost, likePost } from "../../api/postApi";
+import { deletePost, dislikePost, getPost, likePost } from "../../api/postApi";
 import { TComment } from "../../types/comment";
 import PostComment from "./PostComment";
 import { createComment, getCommentByPostId } from "../../api/commentApi";
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
+import Swal from "sweetalert2";
+import { ROUTE_HOME } from "../../constants/WebPath";
+import { EditIcon, ThumbDownIcon, ThumbUpIcon, TrashIcon } from "../icons";
+import { useAuth } from "../../context/AuthProvider";
+import formateDateFromString from "../utils/FormatDate";
 
 const PostDetailsItem: React.FC<TPost> = ({
   id,
@@ -25,13 +25,15 @@ const PostDetailsItem: React.FC<TPost> = ({
   imageUrl,
   author,
   createdDate,
-
 }) => {
   const [likes, setLikes] = useState(totalLikes);
   const [commentList, setCommentList] = useState<TComment[]>([]);
-
+  const auth = useAuth();
+  const isFromUser = auth?.isFromUser(author);
+  const isLoggedIn = auth?.isLoggedIn();
   const navigate = useNavigate();
-  
+  const formattedDate = formateDateFromString(createdDate);
+
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -74,28 +76,27 @@ const PostDetailsItem: React.FC<TPost> = ({
   } = useForm<TCommentFormInput>({
     resolver: yupResolver(schema),
   });
+
   const onSubmit: SubmitHandler<TCommentFormInput> = async (data) => {
     const username = sessionStorage.getItem("username");
     const uniqueId = uuidv4();
+    const newDate = new Date().toISOString();
+    const createdDateFormatted = formateDateFromString(newDate);
     const newComment: TComment = {
       id: uniqueId,
       author: username || "",
       comment: data.newcomment,
-      createdDate: new Date().toISOString(),
+      createdDate: createdDateFormatted,
       postId: id,
       isDelete: false,
     };
     const response = await createComment(newComment);
-
-    
     setCommentList([...commentList, newComment]);
-
     reset();
   };
 
   const handleIsLiked = async () => {
     try {
-
       if (!isThumbsUp) {
         const updatedPost = await likePost(id);
         setLikes(updatedPost.totalLikes);
@@ -130,6 +131,43 @@ const PostDetailsItem: React.FC<TPost> = ({
       console.error("Failed to dislike post:", error);
     }
   };
+  const handleEdit = () => {
+    navigate(`/posts/${id}/edit`); // Navigate to the edit post page
+  };
+
+  const handleDelete = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deletePost(id);
+        if (response) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+            confirmButtonColor: "#d33",
+          }).then(async (result) => {
+            if (result.isConfirmed) navigate(ROUTE_HOME);
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "Failed to delete post",
+            icon: "error",
+          });
+          return;
+        }
+      }
+    });
+  };
+
   return (
     <>
       <div className="p-5 mb-5 rounded-lg shadow-md border w-2/3 flex flex-col">
@@ -139,7 +177,7 @@ const PostDetailsItem: React.FC<TPost> = ({
             By: {author}
           </h3>
           <h3 className="font-light text-secondary mb-3 text-sm">
-            Date: {createdDate}
+            Date: {formattedDate}
           </h3>
         </div>
         {content ? (
@@ -147,7 +185,7 @@ const PostDetailsItem: React.FC<TPost> = ({
         ) : imageUrl ? (
           <img src={imageUrl} alt={imageUrl} className="w-fit" />
         ) : null}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           <div className="flex items-center justify-center gap-2 rounded-lg bg-slate-100 px-2 py-2">
             <button>
               <span>
@@ -168,14 +206,29 @@ const PostDetailsItem: React.FC<TPost> = ({
                 />
               </span>
             </button>
-            <button className="bg-primary text-white rounded-lg px-2 py-1">
+            {/* <button className="bg-primary text-white rounded-lg px-2 py-1">
               Add comment
-            </button>
+            </button> */}
           </div>
+          {isFromUser ? (
+            <div>
+              <button onClick={handleEdit}>
+                <span className="text-blue-500">
+                  <EditIcon className="size-5" />
+                </span>
+              </button>
+              <button onClick={handleDelete}>
+                <span className="text-red-500">
+                  <TrashIcon className="size-5" />
+                </span>
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
-
-      <form
+      { isLoggedIn ? (<form
         onSubmit={handleSubmit(onSubmit)}
         className="w-2/3 mb-5 p-5 border rounded-lg shadow-md"
       >
@@ -203,8 +256,8 @@ const PostDetailsItem: React.FC<TPost> = ({
         >
           Submit
         </button>
-      </form>
-      
+      </form>) : (<div></div>)}
+
       <div>
         {commentList.map((comment) => (
           <PostComment key={comment.id} comment={comment} />

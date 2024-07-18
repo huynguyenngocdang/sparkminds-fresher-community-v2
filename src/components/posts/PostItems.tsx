@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { TPost } from "../../types/post";
-import ThumbUpIcon from "../icons/ThumbUpIcon";
-import ThumbDownIcon from "../icons/ThumbDownIcon";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ROUTE_POST_DETAILS } from "../../constants/WebPath";
-import ChatBubbleIcon from "../icons/ChatBubbleIcon";
 import useToggleValues from "../../hooks/useToggleValues";
 import { dislikePost, getPost, likePost } from "../../api/postApi";
 import { useAuth } from "../../context/AuthProvider";
+import { ChatBubbleIcon, ThumbDownIcon, ThumbUpIcon } from "../icons";
+import formateDateFromString from "../utils/FormatDate";
 
 const PostItems: React.FC<TPost> = ({
   id,
@@ -27,6 +26,7 @@ const PostItems: React.FC<TPost> = ({
     useToggleValues();
   const { value: isThumbDown, handleToggleValue: toggleIsDisliked } =
     useToggleValues();
+
 
     useEffect(() => {
       const fetchPost = async () => {
@@ -85,10 +85,16 @@ const PostItems: React.FC<TPost> = ({
     }
   };
 
+  const formattedDate = formateDateFromString(createdDate);
+
   return (
     <div className="p-5 mb-5 rounded-lg shadow-md border w-2/3 flex flex-col">
       <h2 className="font-bold text-2xl mb-1">{title}</h2>
-      <h3 className="font-light text-secondary mb-3 text-sm">By: {author}</h3>
+
+      <div className="flex items-center justify-between font-light text-secondary mb-3 text-sm">
+        <h3>By: {author}</h3>
+        <span>Date: {formattedDate}</span>
+      </div>
       {content ? (
         <p className="font-light text-secondary">{content}</p>
       ) : imageUrl ? (
